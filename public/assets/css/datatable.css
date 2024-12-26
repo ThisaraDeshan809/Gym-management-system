@@ -17,7 +17,6 @@ background-color: #111322;
 .dark .dataTable-selector {
 background-color: #111322;
 color: #fff;
-display: none;
 }
 
 .dataTable-top label {
@@ -65,7 +64,6 @@ Github: https://github.com/fiduswriter/Simple-DataTables
   
   .dataTable-selector {
     padding: 6px;
-    display: none;
   }
   
   .dataTable-input {
@@ -240,7 +238,6 @@ Github: https://github.com/fiduswriter/Simple-DataTables
   .dataTable-wrapper .dataTable-top .dataTable-dropdown label .dataTable-selector {
     border-color: #e9ecef;
     border-radius: 0.25rem;
-    display: none;
   }
   
   .dataTable-wrapper .dataTable-top .dataTable-search input {

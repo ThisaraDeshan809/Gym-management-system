@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Mail\SendPasswordEmail;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +12,12 @@ use Illuminate\Support\Facades\Mail;
 class genaralController extends Controller
 {
     
-    
     public function index(){
 
-        $latestProfile = Profile::latest('id')->first();
 
-
-        return view('dashboards.publicsite.portfolio', compact('latestProfile'));
+        return view('dashboards.publicsite.homePage');
     }
-
+    
     
     
     
