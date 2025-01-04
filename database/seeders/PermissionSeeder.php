@@ -16,7 +16,8 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
             'Manage Users',
-            'Access Admin Dashboard'
+            'Access Admin Dashboard',
+            'Manage Employees'
         ];
 
         foreach ($permissions as $permissionName) {

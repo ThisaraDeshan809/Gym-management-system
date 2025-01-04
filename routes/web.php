@@ -2,12 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\roleController;
+use App\Http\Controllers\siteController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\genaralController;
+use App\Http\Controllers\employeeController;
 use App\Http\Controllers\dashboardController;
 
 
 Route::controller(genaralController::class)->group(function () {
+
     Route::get('/','index')->name('index');
     Route::get('/home', 'home')->name('home');
     Route::get('/redirect-dashboard', 'dashboardRedirect')->name('dashboardRedirect');
@@ -16,6 +19,10 @@ Route::controller(genaralController::class)->group(function () {
     Route::get('/set-new-password', 'setNewPass')->name('setNewPass');
     Route::post('set-new-pass', 'setNewPassword')->name('setNewPassword');
     Route::get('/user-login', 'userLogin')->name('userLogin');
+    Route::post('/login-user','loginUser')->name('loginUser');
+    Route::get('/user-register','userRegister')->name('userRegister');
+    Route::post('/register-User','registerUser')->name('registerUser');
+
 });
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'permission:Access Admin Dashboard', config('jetstream.auth_session'), 'verified',])->group(function () {
@@ -25,6 +32,26 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'permission:Access Admin Das
     });
 
 });
+
+
+Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashboard', config('jetstream.auth_session'), 'verified',])->group(function () {
+
+    Route::controller(dashboardController::class)->group(function () {
+        Route::get('/user-dashboard', 'getUserDashboard')->name('userDashboard');
+    });
+
+    Route::controller(siteController::class)->group(function () {
+
+        Route::get('/about-us', 'aboutUs')->name('aboutUs');
+        Route::get('/our-team','ourTeam')->name('ourTeam');
+        Route::get('/contact-us','contactUs')->name('contactUs');
+        Route::get('/edit-employee/{id}','editEmployee')->name('editEmployee');
+        
+
+    });
+
+});
+
 
 Route::middleware(['permission:Manage Users', config('jetstream.auth_session'), 'verified',])->group(function () {
 
@@ -45,6 +72,17 @@ Route::middleware(['permission:Manage Users', config('jetstream.auth_session'), 
         Route::post('/store-role', 'storeRole')->name('storeRole');
         Route::post('/delete-role/{id}', 'deleteRole')->name('deleteRole');
         Route::get('/view-role/{id}', 'viewRole')->name('viewRole');
+    });
+
+});
+
+Route::middleware(['permission:Manage Employees', config('jetstream.auth_session'), 'verified',])->group(function () {
+
+    Route::controller(employeeController::class)->group(function () {
+        Route::get('/new-employee', 'newEmployee')->name('newEmployee');
+        Route::post('/store-employee','storeEmployee')->name('storeEmployee');
+        Route::post('/update-employee/{id}','updateEmployee')->name('updateEmployee');
+        Route::post('/delete-employee/{id}','deleteEmployee')->name('deleteEmployee');
     });
 
 });

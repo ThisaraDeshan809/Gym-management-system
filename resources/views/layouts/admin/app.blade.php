@@ -15,7 +15,7 @@
         @endif
     @endif
 
-    <main class="relative h-full max-h-screen transition-all duration-200 ease-soft-in-out xl:ml-68 rounded-xl">
+    <main class="relative h-full transition-all duration-200 ease-soft-in-out xl:ml-68 rounded-xl">
 
         @include('dashboards.admin.includes.nav')
 

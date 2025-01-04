@@ -16,4 +16,14 @@ class dashboardController extends Controller
 
         return view('dashboards.admin.dashboard', compact('user', 'users'));
     }
+
+    public function getUserDashboard(){
+
+        $user = Auth::user();
+
+        $users = User::all();
+
+        return view('dashboards.user.dashboard', compact('user','users'));
+
+    }
 }

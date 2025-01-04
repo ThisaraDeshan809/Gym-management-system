@@ -16,15 +16,17 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $admin = Role::create(['name' => 'Admin']);
-        $student = Role::create(['name' => 'Vendor']);
+        $user = Role::create(['name' => 'User']);
+        
 
         Permission::create(['name' => 'Manage Users']);
         Permission::create(['name' => 'Access Admin Dashboard']);
-        Permission::create(['name' => 'Access Vendor Dashboard']);
+        Permission::create(['name' => 'Access User Dashboard']);
         
+
         $admin->givePermissionTo('Access Admin Dashboard');
         $admin->givePermissionTo('Manage Users');
-        $student->givePermissionTo('Access Vendor Dashboard');
+        $user->givePermissionTo('Access User Dashboard');
     }
 }
 

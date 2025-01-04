@@ -17,7 +17,7 @@
 
             {{-- login-form --}}
 
-            <form role="form text-left" method="POST" action="{{ route('login') }}">
+            <form role="form text-left" method="POST" action="{{ route('loginUser') }}">
                 @csrf
               <div class="mb-4 text-start">
                 <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="email">Email <span class="text-red-600">*</span></label>
