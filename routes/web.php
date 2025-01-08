@@ -6,6 +6,7 @@ use App\Http\Controllers\siteController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\genaralController;
 use App\Http\Controllers\employeeController;
+use App\Http\Controllers\packagesController;
 use App\Http\Controllers\dashboardController;
 
 
@@ -41,12 +42,10 @@ Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashb
     });
 
     Route::controller(siteController::class)->group(function () {
-
         Route::get('/about-us', 'aboutUs')->name('aboutUs');
         Route::get('/our-team','ourTeam')->name('ourTeam');
         Route::get('/contact-us','contactUs')->name('contactUs');
-        Route::get('/edit-employee/{id}','editEmployee')->name('editEmployee');
-        
+        Route::get('/pricing','pricing')->name('pricing');
 
     });
 
@@ -83,6 +82,17 @@ Route::middleware(['permission:Manage Employees', config('jetstream.auth_session
         Route::post('/store-employee','storeEmployee')->name('storeEmployee');
         Route::post('/update-employee/{id}','updateEmployee')->name('updateEmployee');
         Route::post('/delete-employee/{id}','deleteEmployee')->name('deleteEmployee');
+    });
+
+});
+
+Route::middleware([config('jetstream.auth_session'), 'verified',])->group(function () {
+
+    Route::controller(packagesController::class)->group(function () {
+        Route::get('/all-Packages', 'allPackages')->name('allPackages');
+        Route::post('/store-package','storePackage')->name('storePackage');
+        Route::post('/update-package/{id}','updatePackage')->name('updatePackage');
+        Route::post('/delete-package/{id}','deletePackage')->name('deletePackage');
     });
 
 });

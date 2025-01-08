@@ -94,6 +94,11 @@
                   Contact Us
                 </a>
               </li>
+              <li>
+                <a class="block px-4 py-2 mr-2 font-bold transition-all lg-max:opacity-0 duration-250 ease-soft-in-out text-sm text-black lg:px-2" href="{{route('pricing')}}">
+                  Pricing
+                </a>
+              </li>
             </ul>
           </div>
         </div>

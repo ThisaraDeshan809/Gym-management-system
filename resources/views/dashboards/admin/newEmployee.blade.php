@@ -4,7 +4,6 @@
 
 
 <div class="w-full p-6 mx-auto">
-
     <div class="w-full max-w-full px-3 lg:flex-0 shrink-0">
       <div class="relative flex flex-col flex-auto min-w-0 p-4 mb-4 break-words bg-white border-0 dark:bg-gray-950 dark:shadow-soft-dark-xl shadow-soft-xl rounded-2xl bg-clip-border" id="profile">
         <div class="flex flex-wrap items-center justify-center -mx-3">

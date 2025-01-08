@@ -6,7 +6,7 @@
 <section>
     <div class="relative flex items-center p-0 overflow-hidden bg-center bg-cover min-h-75-screen">
         <div class="container z-10">
-            <div class="flex flex-wrap">
+            <div class="flex flex-wrap items-center ">
                 <div class="flex flex-col w-full max-w-full md:flex-0 shrink-0 sm:w-8/12 md:w-8/12 lg:w-5/12 xl:w-4/12">
                     <div class="w-full relative mb-2 px-2 py-2 bg-white shadow-soft-md flex flex-col min-w-0 mt-10 break-words bg-transparent border-0 rounded-2xl bg-clip-border">
                         <div class="p-4 pb-0 mb-0 justify-center items-center text-center bg-transparent border-b-0 rounded-t-2xl">
@@ -62,23 +62,23 @@
                                     <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">Remember me</label>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-full cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-[#e38d24] to-[#f7b615] hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign in</button>
+                                    <button type="submit" class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-full cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-gray-800 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign Up</button>
                                 </div>
                             </form>
                         </div>
                         <div class="px-1 pt-0 text-center bg-transparent border-t-0 border-t-solid rounded-b-2xl lg:px-2">
                             <p class="mx-auto leading-normal text-sm">
                                 Already have an account?
-                                <a href="{{url('/Seller-login')}}" class="relative z-10 font-semibold text-transparent bg-gradient-to-tl from-gray-800 to-slate-800 bg-clip-text">Sign in</a>
+                                <a href="{{url('/user-login')}}" class="relative z-10 font-semibold text-transparent bg-gradient-to-tl from-gray-800 to-slate-800 bg-clip-text">Sign in</a>
                             </p>
                         </div>
                     </div>
                 </div>
-                <div class="w-full max-w-full lg:flex-0 shrink-0 md:w-4/12 mb-4">
-                    <div class="absolute top-0 hidden m-20 mt-0 w-180 h-full rounded-bl-xl md:block">
+                <div class="w-full max-w-full lg:flex-0 md:w-4/12 mb-4">
+                    <div class="absolute top-0  m-20 mt-0 w-180 h-full rounded-xl md:block">
                         
                     
-                    <img src="{{asset('assets/img/handiye kade app.webp')}}" alt="" class=" w-full p-7 top-0 -mt-20">
+                    <img src="{{asset('img/hero/hero-2.jpg')}}" alt="" class=" w-full rounded-xl p-7 top-0 mt-20">
                     
                     <!-- <div class="absolute inset-x-0 top-0 z-0 h-full bg-cover" style="background-image: url('../assets/img/handiye kade app.webp')"></div> -->
                     </div>
