@@ -28,7 +28,7 @@ class genaralController extends Controller
             $user = Auth::user();
             if ($user->hasRole('Admin')) {
                 return redirect()->route('adminDashboard');
-            } 
+            }
             elseif($user->hasRole('User')){
                 return redirect()->route('userDashboard');
             }
@@ -61,13 +61,13 @@ class genaralController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
-        
+
         if ($validator->fails()) {
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
         }
-        
+
         if (User::where('email', $request->email)->exists()) {
             return redirect()->back()->withErrors([
                 'email' => 'The email address has already been taken.'
@@ -77,6 +77,7 @@ class genaralController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'type' => 'customer',
             'password' => Hash::make($request->password),
         ]);
 
@@ -87,19 +88,19 @@ class genaralController extends Controller
         return redirect()->route('userDashboard');
 
     }
-    
-    
 
-    
+
+
+
     public function index(){
 
 
         return view('dashboards.publicsite.homePage');
     }
-    
-    
-    
-    
+
+
+
+
     public function home(){
 
         if (auth()->check()) {
@@ -140,7 +141,7 @@ class genaralController extends Controller
         }else{
             return redirect()->route('home');
         }
-        
+
     }
 
     public function setNewPassword(Request $request)
@@ -157,7 +158,7 @@ class genaralController extends Controller
         $user = User::findOrFail($AuthUser->id);
 
         $tempPass = $request->input('password');
-        
+
         $hashedPassword = Hash::make($request->input('password'));
 
         $user->update([

@@ -42,12 +42,13 @@ class userController extends Controller
 
         ]);
 
-        
+
         $tempPass = $validatedData['password'];
 
         $user = new User();
         $user->name = $validatedData['UserName'];
         $user->email = $validatedData['email'];
+        $user->type = 'management';
         $user->phone = $validatedData['phone'];
         $user->password = Hash::make($validatedData['password']);
         $user->save();
@@ -210,7 +211,7 @@ class userController extends Controller
                 'message' => 'Cannot delete the last admin. At least one admin should be present.',
                 'alert-type' => 'error'
             ];
-    
+
             return back()->with($notification);
         }
 
