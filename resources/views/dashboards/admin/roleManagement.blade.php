@@ -22,7 +22,7 @@
                                 @enderror
                             </div>
                             <div class="w-full max-w-full px-3 flex items-end sm:w-2/12 sm:mt-0">
-                                <button type="submit" href="javascript:;" class="inline-block float-right px-8 py-3 mb-0 font-bold text-right text-white uppercase align-middle transition-all border-0 rounded-lg cursor-pointer hover:scale-102 active:opacity-85 hover:shadow-soft-xs dark:bg-gradient-to-tl dark:from-yellow-500 dark:to-orange-400 bg-gradient-to-tl from-yellow-500 to-orange-400 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25">Create Role</button>
+                                <button type="submit" href="javascript:;" class="inline-block float-right px-8 py-3 mb-0 font-bold text-right text-white uppercase align-middle transition-all border-0 rounded-lg cursor-pointer hover:scale-102 active:opacity-85 hover:shadow-soft-xs dark:bg-gradient-to-tl dark:from-yellow-500 dark:to-orange-400 bg-gradient-to-tl from-gray-800 to-slate-800 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25">Create Role</button>
                             </div>
                         </div>
                     </div>

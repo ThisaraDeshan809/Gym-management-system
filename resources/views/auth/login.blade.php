@@ -7,9 +7,8 @@
         <div class="relative z-0 flex flex-col min-w-0 break-words bg-white border-0 dark:bg-gray-950 lg:shadow-soft-xl  rounded-2xl bg-clip-border">
           <div class="text-center border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6">
             <a class="flex -ml-4 justify-center items-center m-0 text-sm whitespace-nowrap text-slate-700 dark:text-white" href="{{route('home')}}">
-                <img src="{{asset('assets/img/royal-car-sale-icon.webp')}}" class="inline-block h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:hidden" alt="main_logo" />
-                <img src="{{asset('assets/img/royal-car-sale-icon.webp')}}" class="hidden h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:inline-block" alt="main_logo" />
-                <h4 class="font-bold ml-2 text-4xl text-start mb-0">C & M <br><span class="bg-gradient-to-tl from-yellow-600 to-orange-400 bg-clip-text text-transparent text-4xl"> Royal Car Sale</span></h4>
+                <img src="{{asset('img/gymfit.png')}}" class="inline-block h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:hidden" alt="main_logo" />
+                <img src="{{asset('img/gymfit.png')}}" class="hidden h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:inline-block" alt="main_logo" />
             </a>
           </div>
       
@@ -17,7 +16,7 @@
 
             {{-- login-form --}}
 
-            <form role="form text-left" method="POST" action="{{ route('login') }}">
+            <form role="form text-left" method="POST" action="{{ route('loginUser') }}">
                 @csrf
               <div class="mb-4 text-start">
                 <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="email">Email <span class="text-red-600">*</span></label>
@@ -39,7 +38,7 @@
                 <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">Remember me</label>
               </div>
               <div class="text-center">
-                <button type="submit" class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-yellow-500 to-orange-300 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign in</button>
+                <button type="submit" class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-gray-800 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign in</button>
               </div>
             </form>
 

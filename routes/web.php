@@ -1,17 +1,18 @@
 <?php
 
+use App\Http\Controllers\attendanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\roleController;
+use App\Http\Controllers\siteController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\genaralController;
-use App\Http\Controllers\profileController;
-use App\Http\Controllers\projectController;
+use App\Http\Controllers\employeeController;
+use App\Http\Controllers\packagesController;
 use App\Http\Controllers\dashboardController;
-use App\Http\Controllers\educationController;
-use App\Http\Controllers\experienceController;
-use App\Http\Controllers\portfolioController;
+use App\Http\Controllers\paymentController;
 
 Route::controller(genaralController::class)->group(function () {
+
     Route::get('/','index')->name('index');
     Route::get('/home', 'home')->name('home');
     Route::get('/redirect-dashboard', 'dashboardRedirect')->name('dashboardRedirect');
@@ -20,12 +21,10 @@ Route::controller(genaralController::class)->group(function () {
     Route::get('/set-new-password', 'setNewPass')->name('setNewPass');
     Route::post('set-new-pass', 'setNewPassword')->name('setNewPassword');
     Route::get('/user-login', 'userLogin')->name('userLogin');
-});
+    Route::post('/login-user','loginUser')->name('loginUser');
+    Route::get('/user-register','userRegister')->name('userRegister');
+    Route::post('/register-User','registerUser')->name('registerUser');
 
-
-Route::controller(portfolioController::class)->group(function () {
-    Route::get('/mobile-profile', 'mobileProfile')->name('mobileProfile');
-    Route::get('/view-project{id}','viewProject')->name('viewProject');
 });
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'permission:Access Admin Dashboard', config('jetstream.auth_session'), 'verified',])->group(function () {
@@ -35,6 +34,24 @@ Route::prefix('admin')->middleware(['auth:sanctum', 'permission:Access Admin Das
     });
 
 });
+
+
+Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashboard', config('jetstream.auth_session'), 'verified',])->group(function () {
+
+    Route::controller(dashboardController::class)->group(function () {
+        Route::get('/user-dashboard', 'getUserDashboard')->name('userDashboard');
+    });
+
+    Route::controller(siteController::class)->group(function () {
+        Route::get('/about-us', 'aboutUs')->name('aboutUs');
+        Route::get('/our-team','ourTeam')->name('ourTeam');
+        Route::get('/contact-us','contactUs')->name('contactUs');
+        Route::get('/pricing','pricing')->name('pricing');
+
+    });
+
+});
+
 
 Route::middleware(['permission:Manage Users', config('jetstream.auth_session'), 'verified',])->group(function () {
 
@@ -59,51 +76,34 @@ Route::middleware(['permission:Manage Users', config('jetstream.auth_session'), 
 
 });
 
+Route::middleware(['permission:Manage Employees', config('jetstream.auth_session'), 'verified',])->group(function () {
+
+    Route::controller(employeeController::class)->group(function () {
+        Route::get('/new-employee', 'newEmployee')->name('newEmployee');
+        Route::post('/store-employee','storeEmployee')->name('storeEmployee');
+        Route::post('/update-employee/{id}','updateEmployee')->name('updateEmployee');
+        Route::post('/delete-employee/{id}','deleteEmployee')->name('deleteEmployee');
+    });
+
+});
 
 Route::middleware([config('jetstream.auth_session'), 'verified',])->group(function () {
 
-    Route::controller(profileController::class)->group(function () {
-        Route::get('/new-profle', 'newProfile')->name('newProfile');
-        Route::post('/store-profile','storeProfile')->name('storeProfile');
-        Route::get('/profile-details','profileDetails')->name('profileDetails');
-        Route::get('/view-profile/{id}','viewProfile')->name('viewProfile');
-        Route::get('/edit-profile/{id}','editProfile')->name('editProfile');
-        Route::post('/update-profile/{id}','updateProfile')->name('updateProfile');
-
-        Route::post('/store-skill/{id}','storeSkill')->name('storeSkill');
-        Route::post('/delete-skill/{id}','deleteSkill')->name('deleteSkill');
-
-        Route::get('/download-CV/{id}','downloadCV')->name('downloadCV');
+    Route::controller(packagesController::class)->group(function () {
+        Route::get('/all-Packages', 'allPackages')->name('allPackages');
+        Route::post('/store-package','storePackage')->name('storePackage');
+        Route::post('/update-package/{id}','updatePackage')->name('updatePackage');
+        Route::post('/delete-package/{id}','deletePackage')->name('deletePackage');
     });
 
-    Route::controller(educationController::class)->group(function () {
-        Route::get('/new-education/{id}', 'newEducation')->name('newEducation');
-        Route::post('/store-education/{id}','storeEducation')->name('storeEducation');
-        Route::get('/edit-education/{id}','editEducation')->name('editEducation');
-        Route::post('update-education/{id}','updateEducation')->name('updateEducation');
-        Route::post('/delete-education/{id}','deleteEducation')->name('deleteEducation');
-    });
-    
-    Route::controller(experienceController::class)->group(function () {
-        Route::get('/new-experience/{id}', 'newExperience')->name('newExperience');
-        Route::post('/store-experience/{id}','storeExperience')->name('storeExperience');
-        Route::get('/edit-experience/{id}','editExperience')->name('editExperience');
-        Route::post('update-experience/{id}','updateExperience')->name('updateExperience');
-        Route::post('/delete-experience/{id}','deleteExperience')->name('deleteExperience');
+    Route::controller(attendanceController::class)->group(function () {
+        Route::get('/all-attendances', 'attendance_page')->name('attendance_page');
+        Route::post('/save-attendance', 'saveAttendance')->name('saveAttendance');
     });
 
-    Route::controller(projectController::class)->group(function () {
-        Route::get('/new-project/{id}', 'newProject')->name('newProject');
-        Route::post('/store-project/{id}','storeProject')->name('storeProject');
-        Route::get('/edit-project/{id}','editProject')->name('editProject');
-        Route::post('/update-project/{id}','updateProject')->name('updateProject');
-        Route::post('/delete-project/{id}','deleteProject')->name('deleteProject');
-
-
-        Route::get('/add-sub-image/{id}','addSubImage')->name('addSubImage');
-        Route::post('/store-sub-image/{id}','storeSubImage')->name('storeSubImage');
-        Route::get('/view-sub-image/{id}','viewSubImage')->name('viewSubImage');
-        Route::post('/delete-sub-image/{id}','deleteSubImage')->name('deleteSubImage');
+    Route::controller(paymentController::class)->group(function () {
+        Route::get('/all-payments', 'payment_page')->name('payment_page');
+        Route::post('/save-Payment', 'savePayment')->name('savePayment');
     });
 
 });
