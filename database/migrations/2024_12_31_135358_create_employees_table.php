@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('address', 255);
             $table->string('phone', 15);
             $table->string('designation', 255);
-            $table->string('email', 255)->unique();
+            $table->string('email', 191)->unique(); // Set maximum length to 191
             $table->timestamps();
         });
     }

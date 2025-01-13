@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('type')->default('management')->after('email');
+        Schema::table('price_packages', function (Blueprint $table) {
+            $table->integer('duration')->nullable()->after('price');
+            $table->integer('trainer_id')->nullable()->after('id');
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('price_packages', function (Blueprint $table) {
             //
         });
     }

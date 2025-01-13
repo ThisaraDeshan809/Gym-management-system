@@ -17,17 +17,17 @@
                     </div>
                 </div>
         </div>
-          
+
       <div class="flex flex-wrap -mx-3">
         <div class="w-full max-w-full px-3 flex-0">
           <div class="relative flex flex-col min-w-0 break-words bg-white border-0 dark:bg-gray-950 dark:shadow-soft-dark-xl shadow-soft-xl rounded-2xl bg-clip-border">
             <div class="flex-auto px-6 py-12">
               <div class="flex flex-wrap w-full px-5">
               <h5 class="mb-5 font-semibold dark:text-white">All Packages</h5>
-  
+
 
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        
+
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
@@ -36,7 +36,9 @@
                             <th scope="col" class="px-6 py-3">
                                 Description
                             </th>
-
+                            <th scope="col" class="px-6 py-3">
+                                Duration(Months)
+                            </th>
                             <th scope="col" class="px-6 py-3">
                                 Price
                             </th>
@@ -53,6 +55,12 @@
                                 </th>
                                 <td class="px-6 py-4 break-words">
                                     {{$package->package_description}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{$package->duration}}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{$package->trainer->name}}
                                 </td>
                                 <td class="px-6 py-4">
                                 {{$package->price}}
@@ -93,7 +101,7 @@
                                                                 <textarea type="text" name="package_description" placeholder="package Description" class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" required >{{$package->package_description}}</textarea>
                                                             </div>
                                                         </div>
-            
+
                                                         <div class="flex flex-wrap -mx-3">
                                                             <div class="w-full max-w-full px-3 flex-0">
                                                                 <label class=" mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="name">Price</label>
@@ -116,15 +124,15 @@
                 </table>
                 <!-- <div class="lg:grid-cols-3 w-full md-grid-cols-2 gap-4 grid">
 
-                            
 
 
 
-                  
-                  
-                  
-                  
-                  
+
+
+
+
+
+
                     {{-- @foreach($employees as $employee)
                                 <div class="flex-auto border border-blue-500 rounded-xl p-4">
                                 <div class="flex">
@@ -166,9 +174,9 @@
 
 
 
-                      
+
                             @endforeach --}}
-  
+
                 </div> -->
               </div>
             </div>
@@ -177,8 +185,8 @@
       </div>
     </div>
 </div>
-  
-  
+
+
     <div class="fixed top-0 left-0 hidden w-full h-full overflow-x-hidden overflow-y-auto transition-opacity ease-linear opacity-0 z-sticky outline-0" id="newEmp" aria-hidden="true">
         <div class="relative w-auto m-2 transition-transform duration-300 pointer-events-none sm:m-7 sm:max-w-125 sm:mx-auto lg:mt-48 ease-soft-out -translate-y-13">
             <div class="relative flex flex-col w-full bg-white border border-solid pointer-events-auto dark:bg-gray-950 bg-clip-padding border-black/20 rounded-xl outline-0">
@@ -204,7 +212,7 @@
                                     <textarea type="text" name="package_description" placeholder="package Description" class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none" required ></textarea>
                                 </div>
                             </div>
-    
+
                             <div class="flex flex-wrap -mx-3">
                                 <div class="w-full max-w-full px-3 flex-0">
                                     <label class=" mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="name">Price</label>
