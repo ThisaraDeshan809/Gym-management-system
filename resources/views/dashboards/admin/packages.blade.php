@@ -57,10 +57,10 @@
                                     {{$package->package_description}}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$package->duration}}
+                                    
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{$package->trainer->name}}
+                                    
                                 </td>
                                 <td class="px-6 py-4">
                                 {{$package->price}}

@@ -27,4 +27,11 @@ class siteController extends Controller
         $packages = PricePackage::all();
         return view('dashboards.user.pricing',compact('packages'));
     }
+
+    public function checkout($id){
+
+        $package = PricePackage::findOrFail($id);
+
+        return view('dashboards.user.checkout',compact('package'));
+    }
 }

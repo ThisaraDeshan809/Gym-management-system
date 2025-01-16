@@ -47,7 +47,7 @@ Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashb
         Route::get('/our-team','ourTeam')->name('ourTeam');
         Route::get('/contact-us','contactUs')->name('contactUs');
         Route::get('/pricing','pricing')->name('pricing');
-
+        Route::get('/checkout/{id}','checkout')->name('checkout');
     });
 
 });
