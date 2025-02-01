@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PricePackage;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class siteController extends Controller
@@ -12,9 +13,10 @@ class siteController extends Controller
         return view('dashboards.user.aboutUs');
     }
 
-    public function ourTeam(){
-
-        return view('dashboards.user.ourTeam');
+    public function ourTeam()
+    {
+        $trainers = User::role('Trainer')->get();
+        return view('dashboards.user.ourTeam',compact('trainers'));
     }
 
     public function contactUs(){
@@ -26,5 +28,12 @@ class siteController extends Controller
 
         $packages = PricePackage::all();
         return view('dashboards.user.pricing',compact('packages'));
+    }
+
+    public function checkout($id){
+
+        $package = PricePackage::findOrFail($id);
+
+        return view('dashboards.user.checkout',compact('package'));
     }
 }
