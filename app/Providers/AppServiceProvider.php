@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Jobs\SendPackageExpiryNotification;
+use App\Models\Payment;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 

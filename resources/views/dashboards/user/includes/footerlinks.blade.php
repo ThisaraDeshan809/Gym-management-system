@@ -43,7 +43,7 @@ AOS.init({
 <script>
     function ConfirmDelete(event, id) {
         event.preventDefault();
-    
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -66,3 +66,5 @@ AOS.init({
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="{{asset('/assets/js/soft-ui-dashboard-pro-tailwind.js?v=1.0.1')}}"></script>
+
+@yield('scripts')

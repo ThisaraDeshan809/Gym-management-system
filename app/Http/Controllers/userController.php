@@ -13,11 +13,8 @@ use Illuminate\Support\Facades\Mail;
 class userController extends Controller
 {
     public function getNewUser() {
-
         $user = Auth::user();
-
         $roles = Role::all();
-
         return view('dashboards.admin.newUser', compact('user','roles'));
     }
 
@@ -41,7 +38,6 @@ class userController extends Controller
             }],
 
         ]);
-
 
         $tempPass = $validatedData['password'];
 

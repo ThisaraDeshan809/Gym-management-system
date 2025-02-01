@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PricePackage extends Model
+class ReserveTrainer extends Model
 {
     use HasFactory;
 
-    protected $table = 'price_packages';
+    protected $table = 'trainerreservations';
     protected $guarded = [];
 }

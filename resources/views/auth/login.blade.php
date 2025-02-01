@@ -11,7 +11,7 @@
                 <img src="{{asset('img/gymfit.png')}}" class="hidden h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:inline-block" alt="main_logo" />
             </a>
           </div>
-      
+
           <div class="flex-auto p-6 text-center">
 
             {{-- login-form --}}
@@ -48,5 +48,5 @@
       </div>
     </div>
   </div>
-    
+
 @endsection
