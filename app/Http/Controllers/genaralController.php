@@ -55,9 +55,10 @@ class genaralController extends Controller
 
 
     public function registerUser(Request $request){
+        // dd($request->all());
 
         $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -75,9 +76,15 @@ class genaralController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
+            'salutation' => $request->salutation,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
-            'type' => 'customer',
+            'phone' => $request->contact_no,
+            'house_no' => $request->house_no,
+            'street' => $request->street,
+            'district' => $request->district,
+            'province' => $request->province,
             'password' => Hash::make($request->password),
         ]);
 

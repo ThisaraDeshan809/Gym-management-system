@@ -21,6 +21,7 @@ class userController extends Controller
 
     public function storeUser(Request $request)
     {
+        // dd($request->all());
         // validate request
         $validatedData = $request->validate([
             'UserName' => 'required|string|max:255',
@@ -42,7 +43,17 @@ class userController extends Controller
         $tempPass = $validatedData['password'];
 
         $user = new User();
+        $user->salutation = $request->salutation;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->name = $validatedData['UserName'];
+        $user->gender = $request->gender;
+        $user->height =  $request->height;
+        $user->weight = $request->weight;
+        $user->house_no = $request->house_no;
+        $user->street = $request->street;
+        $user->district = $request->district;
+        $user->province = $request->province;
         $user->email = $validatedData['email'];
         $user->type = 'management';
         $user->phone = $validatedData['phone'];
