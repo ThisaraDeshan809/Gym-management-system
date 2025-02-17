@@ -1,7 +1,7 @@
-@extends('layouts.publicsite.app') 
+@extends('layouts.publicsite.app')
 
 @section('content')
-    
+
     <main>
       <!-- Hero -->
       <div
@@ -24,21 +24,19 @@
             <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
               <div>
                 <h1 class="text-white font-semibold text-5xl">
-                  Feel The <span class="text-orange-500">Power</span>
+                  Fitness <span class="text-orange-500">Hub</span>
                 </h1>
                 <p class="mt-4 text-lg text-gray-300">
-                  Welcome to The Power Room. We are a fitness and training
-                  center that focuses on pushing you to your absolute limit.
-                  Download our complete brochure to get started today!
+                    Strong Mind , From Body , Stronger You
                 </p>
               </div>
             </div>
           </div>
         </div>
-        <div
+        {{-- <div
           class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
           style="height: 70px; transform: translateZ(0px)"
-        >
+        > --}}
           <svg
             class="absolute bottom-0 overflow-hidden"
             xmlns="http://www.w3.org/2000/svg"
@@ -53,7 +51,7 @@
         </div>
       </div>
 
-      
+
     </main>
 
 @endsection
