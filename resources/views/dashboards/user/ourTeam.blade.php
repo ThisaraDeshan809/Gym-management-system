@@ -1,38 +1,84 @@
-@extends('layouts.usersite.app')
+@extends('layouts.usersite.app2')
 
 @section('content')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css"
-        integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <section class="pt-20 pb-48">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-wrap justify-center text-center mb-24">
-                <div class="w-full lg:w-6/12 px-4">
-                    <h2 class="text-4xl font-semibold uppercase">
-                        Meet Our Trainers
-                    </h2>
-                    <p class="text-lg leading-relaxed m-4">
-                        Our trainers are are here to dedicate the time and effort that
-                        you need to get in the best shape of your life
-                    </p>
+    <!-- Trainers Header Section -->
+    <section class="container-fluid bg-dark py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center text-center">
+                <div class="col-lg-8">
+                    <h5 class="text-primary text-uppercase mb-3">Expert Team</h5>
+                    <h1 class="display-3 text-uppercase text-white mb-4">Meet Our Trainers</h1>
+                    <p class="text-light mb-0">Our certified trainers are here to dedicate the time and effort you need
+                        to
+                        get in the best shape of your life.</p>
                 </div>
             </div>
-            <!-- Trainer Card Wrapper -->
-            <div class="flex flex-wrap">
+        </div>
+    </section>
+
+    <!-- Trainers Section -->
+    <section class="container-fluid py-5 bg-secondary">
+        <div class="container py-5">
+            @if (Auth::user() && Auth::user()->is_registered == 0)
+                <!-- Membership Required Notice -->
+                <div class="alert alert-warning text-center mb-5">
+                    <h4 class="alert-heading">🔒 Membership Required</h4>
+                    <p class="mb-3">You need an active membership to reserve personal training sessions.</p>
+                    <a href="{{ route('pricing') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-crown me-2"></i>View Membership Plans
+                    </a>
+                </div>
+            @else
+                <!-- Welcome Message for Members -->
+                <div class="alert alert-success text-center mb-5">
+                    <h4 class="alert-heading">✅ Welcome, Premium Member!</h4>
+                    <p class="mb-0">You can now reserve personal training sessions with our expert trainers.</p>
+                </div>
+            @endif
+
+            <div class="row g-5">
                 @foreach ($trainers as $trainer)
-                    <div class="w-full md:w-4/12 lg:mb-0 mb-12 px-4 flex justify-center items-center" data-aos="flip-right">
-                        <div class="px-6 text-center">
-                            <img alt="..."
-                                src="https://images.unsplash.com/photo-1597347343908-2937e7dcc560?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-                                class="shadow-lg rounded mx-auto" style="max-width: 250px;" />
-                            <div class="pt-6">
-                                <h5 class="text-xl font-bold">{{ $trainer->name }}</h5>
-                                <p class="mt-1 text-sm text-gray-500 uppercase font-semibold">
-                                    {{ $trainer->email }}
-                                </p>
-                                <button type="button" data-toggle="modal" data-target="#trainer_reserve"
-                                    class="bg-gradient-to-tl from-[#e38d24] to-[#f7b615] text-black font-semibold py-2 px-3 rounded-full inline-block cursor-pointer"
-                                    id="btn_reserve_trainer" data-id="{{ $trainer->id }}">Reserve Now</button>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="team-item position-relative">
+                            <div class="position-relative overflow-hidden rounded">
+                                <img class="img-fluid w-100"
+                                    src="{{ $trainer->profile_photo_path
+                                        ? asset('storage/' . $trainer->profile_photo_path)
+                                        : asset('user_site/img/team-2.jpg') }}"
+                                    alt="{{ $trainer->name }}">
+                                <div class="team-overlay">
+                                    <div class="d-flex align-items-center justify-content-center h-100">
+                                        @if (Auth::user() && Auth::user()->is_registered == 0)
+                                            <!-- Redirect to pricing page for non-registered users -->
+                                            <a href="{{ route('pricing') }}" class="btn btn-warning">
+                                                <i class="fas fa-lock me-2"></i>Get Membership
+                                            </a>
+                                        @else
+                                            <!-- Show reservation button for registered users -->
+                                            <button type="button" class="btn btn-primary btn-reserve"
+                                                data-bs-toggle="modal" data-bs-target="#trainer_reserve"
+                                                data-trainer-id="{{ $trainer->id }}">
+                                                Reserve Now
+                                            </button>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-dark text-center p-4">
+                                <h5 class="text-uppercase text-white mb-2">{{ $trainer->name }}</h5>
+                                <p class="text-primary mb-3">Certified Fitness Trainer</p>
+                                <p class="text-light small">{{ $trainer->email }}</p>
+                                <div class="d-flex justify-content-center">
+                                    <a class="btn btn-primary btn-square rounded-circle mx-1" href="#">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a class="btn btn-primary btn-square rounded-circle mx-1" href="#">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a class="btn btn-primary btn-square rounded-circle mx-1" href="#">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -41,112 +87,232 @@
         </div>
     </section>
 
-    <div class="fixed top-0 left-0 hidden w-full h-full overflow-x-hidden overflow-y-auto transition-opacity ease-linear opacity-0 z-sticky outline-0"
-        id="trainer_reserve" aria-hidden="true">
-        <div
-            class="relative w-auto m-2 transition-transform duration-300 pointer-events-none sm:m-7 sm:max-w-125 sm:mx-auto lg:mt-48 ease-soft-out -translate-y-13">
-            <div
-                class="relative flex flex-col w-full bg-white border border-solid pointer-events-auto dark:bg-gray-950 bg-clip-padding border-black/20 rounded-xl outline-0">
-                <div
-                    class="flex items-center justify-between p-4 border-b border-solid shrink-0 border-slate-100 rounded-t-xl">
-                    <h5 class="mb-0 leading-normal mr-2 dark:text-white" id="ModalLabel">Reserve Trainer</h5>
-                    <button type="button" data-toggle="modal" data-target="#trainer_reserve"
-                        class="fa fa-close w-4 h-4 ml-auto box-content p-2 text-black dark:text-white border-0 rounded-1.5 opacity-50 cursor-pointer -m-2 "
-                        data-dismiss="modal"></button>
-                </div>
-                <form class="relative" id="package-form">
-                    @csrf
-                    <div active form="info"
-                        class="
-                    flex flex-col visible p-6 w-full h-auto min-w-0 first-letter:break-words bg-white border-0 opacity-100 dark:bg-gray-950 dark:shadow-soft-dark-xl shadow-soft-xl rounded-2xl bg-clip-border">
-                        <div>
+    @if (Auth::user() && Auth::user()->is_registered == 1)
+        <!-- Reserve Trainer Modal - Only for registered users -->
+        <div class="modal fade" id="trainer_reserve" tabindex="-1" aria-labelledby="trainerReserveLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content bg-dark text-light">
+                    <div class="modal-header border-0">
+                        <h5 class="modal-title text-uppercase" id="trainerReserveLabel">Reserve Trainer</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <form id="reservation-form">
+                        @csrf
+                        <div class="modal-body">
                             <input type="hidden" name="trainer_id" id="trainer_id">
-                            <div class="flex flex-wrap -mx-3">
-                                <div class="w-full max-w-full px-3 flex-0">
-                                    <label class=" mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                        for="time_in">Time In</label>
-                                    <input type="time" name="time_in" id="time_in" placeholder="Time In"
-                                        class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                                        required />
-                                </div>
+
+                            <div class="mb-3">
+                                <label for="training_type" class="form-label">Training Type</label>
+                                <select class="form-select bg-secondary text-light border-0" id="training_type"
+                                    name="training_type" required>
+                                    <option value="">Select Training Type</option>
+                                    <option value="Power Lifting">Power Lifting</option>
+                                    <option value="Body Building">Body Building</option>
+                                    <option value="Cardio Program">Cardio Program</option>
+                                    <option value="Strength Training">Strength Training</option>
+                                    <option value="Weight Loss">Weight Loss</option>
+                                    <option value="Muscle Gain">Muscle Gain</option>
+                                    <option value="Functional Training">Functional Training</option>
+                                    <option value="Sports Specific">Sports Specific</option>
+                                    <option value="Rehabilitation">Rehabilitation</option>
+                                    <option value="General Fitness">General Fitness</option>
+                                </select>
                             </div>
 
-                            <div class="flex flex-wrap -mx-3">
-                                <div class="w-full max-w-full px-3 flex-0">
-                                    <label class=" mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                        for="time_out">Time Out</label>
-                                    <input type="time" name="time_out" id="time_out" placeholder="Time Out"
-                                        class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                                        required />
-                                </div>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">Date</label>
+                                <input type="date" class="form-control bg-secondary text-light border-0" id="date"
+                                    name="date" required>
                             </div>
 
-                            <div class="flex flex-wrap -mx-3">
-                                <div class="w-full max-w-full px-3 flex-0">
-                                    <label class=" mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                        for="date">Date</label>
-                                    <input type="date" name="date" id="date" placeholder="Date"
-                                        class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                                        required />
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="time_in" class="form-label">Time In</label>
+                                        <input type="time" class="form-control bg-secondary text-light border-0"
+                                            id="time_in" name="time_in" required>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div
-                                class="flex flex-wrap items-center justify-end py-4 border-t border-solid shrink-0 border-slate-100 rounded-b-xl">
-                                <button type="button" data-toggle="modal" data-target="#trainer_reserve"
-                                    class="inline-block px-8 py-2 m-1 mb-4 text-xs font-bold text-center text-white uppercase align-middle transition-all border-0 rounded-lg cursor-pointer ease-soft-in leading-pro tracking-tight-soft bg-gradient-to-tl from-slate-600 to-slate-300 shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85">Close</button>
-                                <button type="button" id="reserve_trainer_btn"
-                                    class="inline-block px-8 py-2 m-1 mb-4 text-xs font-bold text-center text-white uppercase align-middle transition-all border-0 rounded-lg cursor-pointer ease-soft-in leading-pro tracking-tight-soft bg-gradient-to-tl from-gray-900 to-slate-800 shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85">Create</button>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="time_out" class="form-label">Time Out</label>
+                                        <input type="time" class="form-control bg-secondary text-light border-0"
+                                            id="time_out" name="time_out" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="reserve_trainer_btn">Reserve Now</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        .bg-secondary {
+            background-color: #1a1d23 !important;
+        }
 
-    <script>
-        $(document).ready(function() {
-            $('#btn_reserve_trainer').click(function() {
-                var trainer_id = $(this).data('id');
-                $('#trainer_id').val(trainer_id);
-            });
+        .team-item {
+            transition: transform 0.3s ease;
+        }
 
-            $('#reserve_trainer_btn').click(function() {
-                var time_in = $('#time_in').val();
-                var time_out = $('#time_out').val();
-                var trainer_id = $('#trainer_id').val();
-                var date = $('#date').val();
-                var _token = $('input[name="_token"]').val();
+        .team-item:hover {
+            transform: translateY(-10px);
+        }
 
-                $.ajax({
-                    url: "{{ route('trainer.reserve') }}",
-                    type: "POST",
-                    data: {
-                        time_in: time_in,
-                        time_out: time_out,
-                        trainer_id: trainer_id,
-                        _token: _token,
-                        date: date
-                    },
-                    success: function(response) {
-                        if (response.success == true) {
-                            toastr.success(response.message);
-                            $('#trainer_reserve').removeClass('block');
-                            $('#trainer_reserve').addClass('hidden');
-                        } else {
-                            toastr.error(response.message);
-                        }
+        .team-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(214, 51, 132, 0.8);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .team-item:hover .team-overlay {
+            opacity: 1;
+        }
+
+        .btn-reserve {
+            padding: 10px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-square {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+        }
+
+        .form-control {
+            border: none;
+            padding: 12px 15px;
+        }
+
+        .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(214, 51, 132, 0.25);
+            border-color: #d63384;
+        }
+
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd, #ffecb5);
+            color: #856404;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d1edff, #b3e0ff);
+            color: #155724;
+        }
+    </style>
+@endsection
+
+@section('scripts')
+    @if (Auth::user() && Auth::user()->is_registered == 1)
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set up reservation modal
+                const reserveModal = document.getElementById('trainer_reserve');
+                const trainerIdInput = document.getElementById('trainer_id');
+                const dateInput = document.getElementById('date');
+
+                // Set minimum date to today
+                const today = new Date().toISOString().split('T')[0];
+                dateInput.min = today;
+
+                // When reserve button is clicked
+                document.querySelectorAll('.btn-reserve').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const trainerId = this.getAttribute('data-trainer-id');
+                        trainerIdInput.value = trainerId;
+
+                        // Reset form
+                        document.getElementById('reservation-form').reset();
+                        dateInput.min = today;
+                    });
+                });
+
+                // Handle form submission
+                document.getElementById('reservation-form').addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const submitBtn = document.getElementById('reserve_trainer_btn');
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Reserving...';
+
+                    const formData = new FormData(this);
+
+                    fetch("{{ route('trainer.reserve') }}", {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                    .getAttribute('content'),
+                                'Accept': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                toastr.success(data.message);
+                                const modal = bootstrap.Modal.getInstance(reserveModal);
+                                modal.hide();
+                                this.reset();
+                            } else {
+                                toastr.error(data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            toastr.error('An error occurred. Please try again.');
+                        })
+                        .finally(() => {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = 'Reserve Now';
+                        });
+                });
+
+                // Time validation
+                document.getElementById('time_out').addEventListener('change', function() {
+                    const timeIn = document.getElementById('time_in').value;
+                    const timeOut = this.value;
+
+                    if (timeIn && timeOut && timeOut <= timeIn) {
+                        toastr.warning('Time Out must be after Time In');
+                        this.value = '';
                     }
                 });
+
+                // Initialize Bootstrap modal
+                const modal = new bootstrap.Modal(reserveModal);
             });
-        });
-    </script>
+        </script>
+    @endif
 @endsection

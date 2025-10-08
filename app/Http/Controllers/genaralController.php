@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Mail\SendPasswordEmail;
+use App\Models\ReserveTrainer;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -12,12 +14,14 @@ use Illuminate\Support\Facades\Validator;
 
 class genaralController extends Controller
 {
-    public function userLogin(){
+    public function userLogin()
+    {
 
         return view('auth.login');
     }
 
-    public function loginUser(Request $request){
+    public function loginUser(Request $request)
+    {
 
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -28,12 +32,11 @@ class genaralController extends Controller
             $user = Auth::user();
             if ($user->hasRole('Admin')) {
                 return redirect()->route('adminDashboard');
-            }
-            elseif($user->hasRole('User')){
+            } elseif ($user->hasRole('User')) {
                 return redirect()->route('userDashboard');
-            }
-            else
-            {
+            } elseif ($user->hasRole('Trainer')) {
+                return redirect()->route('adminDashboard');
+            } else {
                 Auth::logout();
                 return redirect()->route('home')->withErrors([
                     'email' => 'Access denied for non-users.',
@@ -48,13 +51,15 @@ class genaralController extends Controller
     }
 
 
-    public function userRegister(){
+    public function userRegister()
+    {
 
         return view('auth.userRegister');
     }
 
 
-    public function registerUser(Request $request){
+    public function registerUser(Request $request)
+    {
         // dd($request->all());
 
         $validator = Validator::make($request->all(), [
@@ -79,7 +84,9 @@ class genaralController extends Controller
             'salutation' => $request->salutation,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'name' => $request->first_name . ' ' . $request->last_name,
             'email' => $request->email,
+            'type' => 'customer',
             'phone' => $request->contact_no,
             'house_no' => $request->house_no,
             'street' => $request->street,
@@ -96,29 +103,33 @@ class genaralController extends Controller
 
     }
 
-
-
-
-    public function index(){
-
-
-        return view('dashboards.publicsite.homePage');
+    public function index()
+    {
+        $trainers = User::role('Trainer')->get();
+        $reservedSessions = ReserveTrainer::with(['user', 'trainer'])
+            ->where('status', 'reserved')
+            ->where('date', '>=', Carbon::today()->toDateString())
+            ->orderBy('date')
+            ->orderBy('time_in')
+            ->get()
+            ->groupBy(function ($session) {
+                return Carbon::parse($session->date)->format('l');
+            });
+        return view('dashboards.publicsite.homePage', compact('trainers','reservedSessions'));
     }
 
-
-
-
-    public function home(){
+    public function home()
+    {
 
         if (auth()->check()) {
-                $user = auth()->user();
+            $user = auth()->user();
 
-                if ($user->hasRole('User')) {
-                    return redirect()->route('userDashboard');
-                } else{
-                    return redirect()->route('adminDashboard');
-                }
-        }else{
+            if ($user->hasRole('User')) {
+                return redirect()->route('userDashboard');
+            } else {
+                return redirect()->route('adminDashboard');
+            }
+        } else {
             return redirect()->route('login');
         }
     }
@@ -131,7 +142,7 @@ class genaralController extends Controller
 
             if ($user->hasRole('Vendor')) {
                 return redirect()->route('userDashboard');
-            } else{
+            } else {
                 return redirect()->route('adminDashboard');
             }
         }
@@ -139,13 +150,14 @@ class genaralController extends Controller
         return redirect('/dashboard');
     }
 
-    public function setNewPass(){
+    public function setNewPass()
+    {
 
         $user = Auth::user();
 
         if ($user->pass_reset == 1) {
             return view('auth.newPass');
-        }else{
+        } else {
             return redirect()->route('home');
         }
 

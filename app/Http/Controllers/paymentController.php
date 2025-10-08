@@ -8,6 +8,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class paymentController extends Controller
 {
@@ -89,18 +90,34 @@ class paymentController extends Controller
 
     public function mark_as_paid_payment(Request $request)
     {
-        try{
+        try {
             DB::beginTransaction();
 
             $payment = Payment::findOrFail($request->payment_id);
             $payment->payment_status = 'paid';
+            $payment->is_expired = 0;
+            $payment->payment_date = now();
             $payment->save();
 
+            $user = User::findOrFail($payment->user_id);
+            $user->package_id = $payment->package_id;
+            $user->is_registered = 1;
+            $user->save();
+
             DB::commit();
-            return response()->json(['success' => true, 'message' => 'Payment marked as paid successfully.'], 200);
-        } catch(Exception $e){
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment marked as paid successfully.'
+            ], 200);
+
+        } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Something went wrong'], 500);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong'
+            ], 500);
         }
     }
 }

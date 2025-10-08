@@ -41,6 +41,9 @@
                                                 Trainer
                                             </th>
                                             <th scope="col" class="py-3">
+                                                Type
+                                            </th>
+                                            <th scope="col" class="py-3">
                                                 Date
                                             </th>
                                             <th scope="col" class="py-3">
@@ -101,6 +104,10 @@
                     {
                         data: 'trainer',
                         name: 'trainer'
+                    },
+                    {
+                        data: 'training_type',
+                        name: 'training_type'
                     },
                     {
                         data: 'date',

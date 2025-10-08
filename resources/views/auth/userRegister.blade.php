@@ -1,203 +1,390 @@
-@extends('auth.layouts.app')
+@extends('auth.layouts.app2')
 
 @section('content')
-    <section>
-        <div class="relative flex items-center p-0 overflow-hidden bg-center bg-cover min-h-75-screen">
-            <div class="container z-10">
-                <div class="flex flex-wrap items-center ">
-                    <div class="flex flex-col w-full max-w-full md:flex-0 shrink-0 sm:w-8/12 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                        <div
-                            class="w-full relative mb-2 px-2 py-2 bg-white shadow-soft-md flex flex-col min-w-0 mt-10 break-words bg-transparent border-0 rounded-2xl bg-clip-border">
-                            <div
-                                class="p-4 pb-0 mb-0 justify-center items-center text-center bg-transparent border-b-0 rounded-t-2xl">
-                                <h3
-                                    class="relative z-10 font-bold text-transparent bg-gradient-to-tl from-gray-800 to-slate-800 bg-clip-text">
-                                    Welcome back</h3>
-                                <p class="mb-0">Enter your details to sign up </p>
-                            </div>
-                            <div class="p-4">
+    <style>
+        .registration-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('img/carousel-1.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 100px 0;
+        }
 
-                                <form role="form text-left" method="POST" action="{{ route('registerUser') }}">
-                                    @csrf
+        .registration-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
 
-                                    <div class="flex gap-4 w-full">
-                                        <div class="mb-4 text-start">
-                                            <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                                for="salutation">Salutation <span class="text-red-600">*</span></label>
-                                            <select
-                                                class="focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 outline-none transition-all placeholder:text-gray-500 focus:border-fuchsia-300 focus:outline-none"
-                                                name="salutation" id="salutation">
-                                                <option value="">Select salutation</option>
-                                                <option value="Mr">Mr</option>
-                                                <option value="Ms">Ms</option>
-                                                <option value="Mrs">Mrs</option>
-                                            </select>
+        .registration-header {
+            background: #3A7CBD;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
 
-                                            @error('name')
-                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                        <div class="mb-4 text-start">
-                                            <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                                for="first_name">First Name <span class="text-red-600">*</span></label>
-                                            <input type="text" name="first_name" value="{{ old('first_name') }}" required
-                                                class="{{ $errors->has('name') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                                placeholder="First Name" aria-label="first_name" />
+        .registration-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-family: 'Oswald', sans-serif;
+        }
 
-                                            @error('first_name')
-                                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
+        .registration-body {
+            padding: 30px;
+        }
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="last_name">Last Name <span class="text-red-600">*</span></label>
-                                        <input type="text" name="last_name" value="{{ old('last_name') }}" required
-                                            class="{{ $errors->has('name') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="Last Name" aria-label="last_name" />
+        .form-label {
+            font-weight: 600;
+            color: #1D2A3B;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
 
-                                        @error('last_name')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="email">Email <span class="text-red-600">*</span></label>
-                                        <input type="email" name="email" value="{{ old('email') }}" required
-                                            autofocus autocomplete="username"
-                                            class="{{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="Email" aria-label="Email" aria-describedby="email-addon" />
+        .form-control:focus {
+            border-color: #3A7CBD;
+            box-shadow: 0 0 0 3px rgba(58, 124, 189, 0.2);
+        }
 
-                                        @error('email')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+        .form-control.is-invalid {
+            border-color: #e53e3e;
+        }
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="contact_no">Contact No <span class="text-red-600">*</span></label>
-                                        <input type="text" name="contact_no" value="{{ old('contact_no') }}" required
-                                            class="{{ $errors->has('contact_no') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="Contact No" aria-label="Contact No" aria-describedby="email-addon" />
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
 
-                                        @error('contact_no')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+        .btn-register {
+            background: #3A7CBD;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+        }
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="house_no">House No. <span class="text-red-600">*</span></label>
-                                        <input type="text" name="house_no" value="{{ old('house_no') }}" required
-                                            class="{{ $errors->has('house_no') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="House No. " aria-label="House No. " aria-describedby="email-addon" />
+        .btn-register:hover {
+            background: #2c6195;
+            transform: translateY(-2px);
+        }
 
-                                        @error('house_no')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="street">Street <span class="text-red-600">*</span></label>
-                                        <input type="text" name="street" value="{{ old('street') }}" required
-                                            class="{{ $errors->has('street') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="street" aria-label="street" aria-describedby="email-addon" />
+        .login-link {
+            color: #3A7CBD;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-                                        @error('street')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="district">District <span class="text-red-600">*</span></label>
-                                        <input type="text" name="district" value="{{ old('district') }}" required
-                                            class="{{ $errors->has('district') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="district" aria-label="district" aria-describedby="email-addon" />
+        .login-link:hover {
+            text-decoration: underline;
+        }
 
-                                        @error('district')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="province">Province <span class="text-red-600">*</span></label>
-                                        <input type="text" name="province" value="{{ old('province') }}" required
-                                            class="{{ $errors->has('province') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="province" aria-label="province" aria-describedby="email-addon" />
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
 
-                                        @error('province')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+        .password-input-group {
+            position: relative;
+        }
 
+        @media (max-width: 768px) {
+            .registration-section {
+                padding: 50px 15px;
+            }
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="password">Password <span class="text-red-600">*</span></label>
-                                        <input type="password" name="password" required autocomplete="current-password"
-                                            class="{{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="Password" aria-label="Password"
-                                            aria-describedby="password-addon" />
-                                        @error('password')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
+            .registration-body {
+                padding: 20px;
+            }
+        }
+    </style>
 
-                                    <div class="mb-4 text-start">
-                                        <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80"
-                                            for="password_confirmation">Confirm Password <span
-                                                class="text-red-600">*</span></label>
-                                        <input type="password" name="password_confirmation" required
-                                            autocomplete="current-password"
-                                            class="{{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-gray-300' }} text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-4 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow"
-                                            placeholder="Confirm Password" aria-label="Confirm Password"
-                                            aria-describedby="password-addon" />
-                                        @error('password_confirmation')
-                                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-
-                                    <div class="min-h-6 mb-0.5 block pl-12 text-left">
-                                        <input id="remember_me" name="remember"
-                                            class="mt-0.5 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
-                                            type="checkbox" checked="" />
-                                        <label
-                                            class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700"
-                                            for="rememberMe">Remember me</label>
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit"
-                                            class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-full cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-gray-800 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign
-                                            Up</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div
-                                class="px-1 pt-0 text-center bg-transparent border-t-0 border-t-solid rounded-b-2xl lg:px-2">
-                                <p class="mx-auto leading-normal text-sm">
-                                    Already have an account?
-                                    <a href="{{ url('/user-login') }}"
-                                        class="relative z-10 font-semibold text-transparent bg-gradient-to-tl from-gray-800 to-slate-800 bg-clip-text">Sign
-                                        in</a>
-                                </p>
-                            </div>
+    <!-- Registration Section -->
+    <div class="registration-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="registration-card">
+                        <div class="registration-header">
+                            <h2>CREATE YOUR ACCOUNT</h2>
+                            <p>Join our fitness community and start your journey</p>
                         </div>
-                    </div>
-                    <div class="w-full max-w-full lg:flex-0 md:w-4/12 mb-4">
-                        <div class="absolute top-0  m-20 mt-0 w-180 h-full rounded-xl md:block">
 
+                        <div class="registration-body">
+                            <form role="form text-left" method="POST" action="{{ route('registerUser') }}"
+                                id="registrationForm">
+                                @csrf
 
-                            <img src="{{ asset('img/hero/hero-2.jpg') }}" alt=""
-                                class=" w-full rounded-xl p-7 top-0 mt-20">
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="salutation">Salutation <span
+                                                class="text-danger">*</span></label>
+                                        <select class="form-select form-control" name="salutation" id="salutation" required>
+                                            <option value="">Select salutation</option>
+                                            <option value="Mr" {{ old('salutation') == 'Mr' ? 'selected' : '' }}>Mr
+                                            </option>
+                                            <option value="Ms" {{ old('salutation') == 'Ms' ? 'selected' : '' }}>Ms
+                                            </option>
+                                            <option value="Mrs" {{ old('salutation') == 'Mrs' ? 'selected' : '' }}>Mrs
+                                            </option>
+                                        </select>
+                                        @error('salutation')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
-                            <!-- <div class="absolute inset-x-0 top-0 z-0 h-full bg-cover" style="background-image: url('../assets/img/handiye kade app.webp')"></div> -->
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="first_name">First Name <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="first_name" value="{{ old('first_name') }}" required
+                                            class="form-control {{ $errors->has('first_name') ? 'is-invalid' : '' }}"
+                                            placeholder="First Name" id="first_name" />
+                                        @error('first_name')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="last_name">Last Name <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="last_name" value="{{ old('last_name') }}" required
+                                        class="form-control {{ $errors->has('last_name') ? 'is-invalid' : '' }}"
+                                        placeholder="Last Name" id="last_name" />
+                                    @error('last_name')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="email">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                                        autocomplete="username"
+                                        class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                        placeholder="Email" id="email" />
+                                    @error('email')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label class="form-label" for="gender">Gender <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select form-control" name="gender" id="gender" required>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male" {{ old('gender') == 'Mr' ? 'selected' : '' }}>Male
+                                        </option>
+                                        <option value="Female" {{ old('gender') == 'Ms' ? 'selected' : '' }}>Female
+                                        </option>
+                                        <option value="Other" {{ old('gender') == 'Mrs' ? 'selected' : '' }}>Other
+                                        </option>
+                                    </select>
+                                    @error('gender')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="height">Height <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="height" value="{{ old('height') }}"
+                                        class="form-control {{ $errors->has('height') ? 'is-invalid' : '' }}"
+                                        placeholder="Height" id="height" />
+                                    @error('height')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="weight">Weight <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="weight" value="{{ old('weight') }}"
+                                        class="form-control {{ $errors->has('weight') ? 'is-invalid' : '' }}"
+                                        placeholder="Weight" id="weight" />
+                                    @error('weight')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="contact_no">Contact No <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" name="contact_no" value="{{ old('contact_no') }}" required
+                                        class="form-control {{ $errors->has('contact_no') ? 'is-invalid' : '' }}"
+                                        placeholder="Contact No" id="contact_no" />
+                                    @error('contact_no')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mb-4">
+                                        <label class="form-label" for="house_no">House No. <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="house_no" value="{{ old('house_no') }}" required
+                                            class="form-control {{ $errors->has('house_no') ? 'is-invalid' : '' }}"
+                                            placeholder="House No." id="house_no" />
+                                        @error('house_no')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-8 mb-4">
+                                        <label class="form-label" for="street">Street <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="street" value="{{ old('street') }}" required
+                                            class="form-control {{ $errors->has('street') ? 'is-invalid' : '' }}"
+                                            placeholder="Street" id="street" />
+                                        @error('street')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="district">District <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="district" value="{{ old('district') }}" required
+                                            class="form-control {{ $errors->has('district') ? 'is-invalid' : '' }}"
+                                            placeholder="District" id="district" />
+                                        @error('district')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="province">Province <span
+                                                class="text-danger">*</span></label>
+                                        <input type="text" name="province" value="{{ old('province') }}" required
+                                            class="form-control {{ $errors->has('province') ? 'is-invalid' : '' }}"
+                                            placeholder="Province" id="province" />
+                                        @error('province')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="password">Password <span
+                                                class="text-danger">*</span></label>
+                                        <div class="password-input-group">
+                                            <input type="password" name="password" required autocomplete="new-password"
+                                                class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                                placeholder="Password" id="password" />
+                                            <span class="password-toggle" onclick="togglePassword('password')">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                        @error('password')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label" for="password_confirmation">Confirm Password <span
+                                                class="text-danger">*</span></label>
+                                        <div class="password-input-group">
+                                            <input type="password" name="password_confirmation" required
+                                                autocomplete="new-password"
+                                                class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
+                                                placeholder="Confirm Password" id="password_confirmation" />
+                                            <span class="password-toggle"
+                                                onclick="togglePassword('password_confirmation')">
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+                                        @error('password_confirmation')
+                                            <div class="error-message">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms" name="terms"
+                                        required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="login-link">Terms and Conditions</a>
+                                    </label>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-register btn-lg">
+                                        CREATE ACCOUNT
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <p>Already have an account?
+                                        <a href="{{ url('/user-login') }}" class="login-link">Sign in here</a>
+                                    </p>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+    <!-- Registration Section End -->
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Form validation
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            let isValid = true;
+            const requiredFields = this.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.classList.add('is-invalid');
+                }
+            });
+
+            // Check if passwords match
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('password_confirmation');
+
+            if (password.value !== confirmPassword.value) {
+                isValid = false;
+                confirmPassword.classList.add('is-invalid');
+                document.querySelector('#password_confirmation + .error-message').textContent =
+                    'Passwords do not match';
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    </script>
 @endsection

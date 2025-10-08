@@ -11,4 +11,18 @@ class ReserveTrainer extends Model
 
     protected $table = 'trainerreservations';
     protected $guarded = [];
+    protected $casts = [
+        'date' => 'date',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // Relationship with trainer
+    public function trainer()
+    {
+        return $this->belongsTo(User::class, 'trainer_id');
+    }
 }

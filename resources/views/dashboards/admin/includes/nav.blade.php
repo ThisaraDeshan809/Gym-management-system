@@ -47,7 +47,7 @@
       <div id="search-results" class="absolute z-50 top-12 left-0 w-full"></div>
     </div> --}}
 
-    <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto" id="navbar">  
+    <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto" id="navbar">
       <div class="flex items-center justify-end md:ml-auto md:pr-4">
 
         {{-- <div class="relative flex flex-wrap items-stretch w-full transition-all rounded-lg ease-soft">
@@ -58,18 +58,18 @@
         </div> --}}
       </div>
       <ul class="flex flex-row items-center justify-end pl-0 mb-0 list-none md-max:w-full">
-       
+
         <li class="pr-4">
           <div class="min-h-6 mb-0.5 block pl-0">
             <input dark-toggle class="rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left mt-1 ml-auto w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right" type="checkbox" />
           </div>
         </li>
-        
+
         <!-- online builder btn  -->
         <!-- <li class="flex items-center">
         <a class="inline-block px-8 py-2 mb-0 mr-4 font-bold text-center uppercase align-middle transition-all bg-transparent border border-solid rounded-lg shadow-none cursor-pointer leading-pro border-fuchsia-500 ease-soft-in text-xs hover:scale-102 active:shadow-soft-xs text-fuchsia-500 hover:border-fuchsia-500 active:bg-fuchsia-500 active:hover:text-fuchsia-500 hover:text-fuchsia-500 tracking-tight-soft hover:bg-transparent hover:opacity-75 hover:shadow-none active:text-white active:hover:bg-transparent" target="_blank" href="https://www.creative-tim.com/builder/soft-ui?ref=navbar-dashboard&amp;_ga=2.76518741.1192788655.1647724933-1242940210.1644448053">Online Builder</a>
       </li> -->
-        
+
         <li class="flex items-center pr-4 xl:hidden">
           <a sidenav-trigger class="block p-0 transition-all ease-nav-brand text-sm text-slate-500 dark:text-white" href="javascript:;" aria-expanded="false">
             <div class="w-4.5 overflow-hidden">
@@ -90,7 +90,7 @@
           <div class="relative">
             <button dropdown-trigger aria-expanded="false" type="button" class="inline-block p-0 mr-4 cursor-pointer">
               @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                        <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('storage/' . Auth::user()->profile_photo_path) }}" alt="{{ Auth::user()->name }}" />
                 @else
                     <span class="inline-flex rounded-md">
                             {{ Auth::user()->name }}
@@ -116,7 +116,7 @@
               <li>
                 <form id="logout-form" method="POST" action="{{ route('logout') }}">
                   @csrf
-              
+
                   <button type="submit" class="py-1.2 lg:ease-soft font-bold clear-both block w-full whitespace-nowrap border-0 bg-transparent px-4 text-left text-slate-500 hover:bg-gray-200 hover:text-slate-700 dark:text-white dark:hover:bg-gray-200/80 dark:hover:text-slate-700 lg:transition-colors lg:duration-300">
                       {{ __('Log Out') }}
                   </button>

@@ -1,52 +1,192 @@
-@extends('auth.layouts.app')
+@extends('auth.layouts.app2')
 
 @section('content')
-  <div class=" h-screen flex-col items-center justify-center">
-    <div class="h-screen flex flex-wrap justify-center items-center -mx-3">
-      <div class="w-full max-w-full px-3 mx-auto shrink-0 md:flex-0 md:w-7/12 lg:w-5/12 xl:w-4/12">
-        <div class="relative z-0 flex flex-col min-w-0 break-words bg-white border-0 dark:bg-gray-950 lg:shadow-soft-xl  rounded-2xl bg-clip-border">
-          <div class="text-center border-black/12.5 rounded-t-2xl border-b-0 border-solid p-6">
-            <a class="flex -ml-4 justify-center items-center m-0 text-sm whitespace-nowrap text-slate-700 dark:text-white" href="{{route('home')}}">
-                <img src="{{asset('img/gymfit.png')}}" class="inline-block h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:hidden" alt="main_logo" />
-                <img src="{{asset('img/gymfit.png')}}" class="hidden h-full max-w-full transition-all duration-200 ease-soft-in-out max-h-24 dark:inline-block" alt="main_logo" />
-            </a>
-          </div>
+    <style>
+        .login-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('img/carousel-1.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 129px 0;
+        }
 
-          <div class="flex-auto p-6 text-center">
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
 
-            {{-- login-form --}}
+        .login-header {
+            background: #3A7CBD;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
 
-            <form role="form text-left" method="POST" action="{{ route('loginUser') }}">
-                @csrf
-              <div class="mb-4 text-start">
-                <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="email">Email <span class="text-red-600">*</span></label>
-                <input type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" class="{{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-4 px-3 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow" placeholder="Email" aria-label="Email" aria-describedby="email-addon" />
+        .login-header h2 {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-family: 'Oswald', sans-serif;
+        }
 
-                @error('email')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-              </div>
-              <div class="mb-4 text-start">
-                <label class="mb-2 ml-1 font-bold text-xs text-slate-700 dark:text-white/80" for="password">Password <span class="text-red-600">*</span></label>
-                <input type="password" name="password" required autocomplete="current-password" class="{{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}  text-sm focus:shadow-soft-primary-outline dark:bg-gray-950 dark:placeholder:text-white/80 dark:text-white/80 leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-4 px-3 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow" placeholder="Password" aria-label="Password" aria-describedby="password-addon" />
-                @error('password')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
-              </div>
-              <div class="min-h-6 mb-0.5 block pl-12 text-left">
-                <input id="remember_me" name="remember" class="mt-0.5 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.3 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right" type="checkbox" checked="" />
-                <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700" for="rememberMe">Remember me</label>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="inline-block w-full px-6 py-4 mt-6 mb-2 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl  from-gray-800 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white">Sign in</button>
-              </div>
-            </form>
+        .login-body {
+            padding: 30px;
+        }
 
-            {{-- end of login form --}}
-          </div>
+        .form-label {
+            font-weight: 600;
+            color: #1D2A3B;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #3A7CBD;
+            box-shadow: 0 0 0 3px rgba(58, 124, 189, 0.2);
+        }
+
+        .form-control.is-invalid {
+            border-color: #e53e3e;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+
+        .btn-login {
+            background: #3A7CBD;
+            color: white;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-login:hover {
+            background: #2c6195;
+            transform: translateY(-2px);
+        }
+
+        .register-link {
+            color: #3A7CBD;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+        }
+
+        .password-input-group {
+            position: relative;
+        }
+    </style>
+
+    <!-- Login Section -->
+    <div class="login-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="login-card">
+                        <div class="login-header">
+                            <h2>WELCOME BACK</h2>
+                            <p>Login to continue your journey</p>
+                        </div>
+
+                        <div class="login-body">
+                            <form method="POST" action="{{ route('loginUser') }}">
+                                @csrf
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="email">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" name="email" value="{{ old('email') }}" required autofocus
+                                        autocomplete="username"
+                                        class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                        placeholder="Email" id="email" />
+                                    @error('email')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label" for="password">Password <span
+                                            class="text-danger">*</span></label>
+                                    <div class="password-input-group">
+                                        <input type="password" name="password" required autocomplete="current-password"
+                                            class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                            placeholder="Password" id="password" />
+                                        <span class="password-toggle" onclick="togglePassword('password')">
+                                            <i class="fa fa-eye"></i>
+                                        </span>
+                                    </div>
+                                    @error('password')
+                                        <div class="error-message">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-4 form-check">
+                                    <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
+                                    <label class="form-check-label" for="remember_me">Remember Me</label>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-login btn-lg">
+                                        LOGIN
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <p>Don't have an account?
+                                        <a href="{{ url('/user-register') }}" class="register-link">Create one</a>
+                                    </p>
+                                    <p>
+                                        <a href="{{ route('password.request') }}" class="register-link">Forgot your
+                                            password?</a>
+                                    </p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 
+    <script>
+        function togglePassword(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+    </script>
 @endsection

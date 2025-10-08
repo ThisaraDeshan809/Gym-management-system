@@ -18,15 +18,16 @@ class trainerController extends Controller
 
     public function get_trainer_reservations()
     {
-        $reservations = ReserveTrainer::get();
+        $reservations = ReserveTrainer::with(['user', 'trainer'])->get();
         return datatables()->of($reservations)
             ->addColumn('user_name', function ($row) {
-                $user = User::find($row->user_id);
-                return $user->name;
+                return $row->user->name;
             })
             ->addColumn('trainer', function ($row) {
-                $trainer = User::find($row->trainer_id);
-                return $trainer->name;
+                return $row->trainer->name;
+            })
+            ->addColumn('training_type', function ($row) {
+                return '<span class="badge bg-primary">' . $row->type . '</span>';
             })
             ->addColumn('action', function ($row) {
                 $btn = '';
@@ -41,7 +42,7 @@ class trainerController extends Controller
 
                 return $btn . " " . $btn_cancel;
             })
-            ->rawColumns(['action'])
+            ->rawColumns(['action', 'training_type'])
             ->make(true);
     }
 
@@ -49,18 +50,41 @@ class trainerController extends Controller
     {
         // validate request
         $validatedData = $request->validate([
-            'trainer_id' => 'required',
-            'date' => 'required',
+            'trainer_id' => 'required|exists:users,id',
+            'training_type' => 'required|string|max:255',
+            'date' => 'required|date|after:today',
             'time_in' => 'required',
-            'time_out' => 'required',
+            'time_out' => 'required|after:time_in',
         ]);
 
         try {
             DB::beginTransaction();
 
+            // Check if the trainer is available at the requested time
+            $existingReservation = ReserveTrainer::where('trainer_id', $validatedData['trainer_id'])
+                ->where('date', $validatedData['date'])
+                ->where('status', 'reserved')
+                ->where(function($query) use ($validatedData) {
+                    $query->whereBetween('time_in', [$validatedData['time_in'], $validatedData['time_out']])
+                          ->orWhereBetween('time_out', [$validatedData['time_in'], $validatedData['time_out']])
+                          ->orWhere(function($q) use ($validatedData) {
+                              $q->where('time_in', '<=', $validatedData['time_in'])
+                                ->where('time_out', '>=', $validatedData['time_out']);
+                          });
+                })
+                ->first();
+
+            if ($existingReservation) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Trainer is not available at the selected time. Please choose a different time.'
+                ], 422);
+            }
+
             $reserve = new ReserveTrainer();
             $reserve->user_id = Auth::user()->id;
             $reserve->trainer_id = $validatedData['trainer_id'];
+            $reserve->type = $validatedData['training_type'];
             $reserve->date = $validatedData['date'];
             $reserve->time_in = $validatedData['time_in'];
             $reserve->time_out = $validatedData['time_out'];
@@ -69,10 +93,16 @@ class trainerController extends Controller
 
             DB::commit();
 
-            return response()->json(['success' => true, 'message' => 'Reservation successful'], 200);
+            return response()->json([
+                'success' => true,
+                'message' => 'Reservation successful! Training Type: ' . $validatedData['training_type']
+            ], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Reservation failed' . $e->getMessage()], 500);
+            return response()->json([
+                'success' => false,
+                'message' => 'Reservation failed: ' . $e->getMessage()
+            ], 500);
         }
     }
 
@@ -86,7 +116,7 @@ class trainerController extends Controller
             return response()->json(['success' => true, 'message' => 'Reservation Completed'], 200);
         } catch(Exception $e){
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Something went wrong' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
         }
     }
 
@@ -102,7 +132,26 @@ class trainerController extends Controller
             return response()->json(['success' => true, 'message' => 'Reservation Cancelled'], 200);
         } catch(Exception $e){
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'Something went wrong' . $e->getMessage()], 500);
+            return response()->json(['success' => false, 'message' => 'Something went wrong: ' . $e->getMessage()], 500);
         }
+    }
+
+    // Get available training types (optional API endpoint)
+    public function getTrainingTypes()
+    {
+        $trainingTypes = [
+            'Power Lifting',
+            'Body Building',
+            'Cardio Program',
+            'Strength Training',
+            'Weight Loss',
+            'Muscle Gain',
+            'Functional Training',
+            'Sports Specific',
+            'Rehabilitation',
+            'General Fitness'
+        ];
+
+        return response()->json($trainingTypes);
     }
 }

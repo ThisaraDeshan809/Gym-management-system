@@ -15,7 +15,7 @@ use App\Http\Controllers\reservationController;
 use App\Http\Controllers\trainerController;
 
 Route::controller(genaralController::class)->group(function () {
-    Route::get('/','index')->name('index');
+    Route::get('/', 'index')->name('index');
     Route::get('/home', 'home')->name('home');
     Route::get('/redirect-dashboard', 'dashboardRedirect')->name('dashboardRedirect');
     Route::get('/setdashboard', 'setDashboard')->name('setDashboard');
@@ -23,9 +23,20 @@ Route::controller(genaralController::class)->group(function () {
     Route::get('/set-new-password', 'setNewPass')->name('setNewPass');
     Route::post('set-new-pass', 'setNewPassword')->name('setNewPassword');
     Route::get('/user-login', 'userLogin')->name('userLogin');
-    Route::post('/login-user','loginUser')->name('loginUser');
-    Route::get('/user-register','userRegister')->name('userRegister');
-    Route::post('/register-User','registerUser')->name('registerUser');
+    Route::post('/login-user', 'loginUser')->name('loginUser');
+    Route::get('/user-register', 'userRegister')->name('userRegister');
+    Route::post('/register-User', 'registerUser')->name('registerUser');
+});
+
+Route::controller(siteController::class)->group(function () {
+    Route::get('/about-us', 'aboutUs')->name('aboutUs');
+    Route::get('/our-team', 'ourTeam')->name('ourTeam');
+    Route::get('/contact-us', 'contactUs')->name('contactUs');
+    Route::get('/pricing', 'pricing')->name('pricing');
+});
+
+Route::controller(equipmentController::class)->group(function () {
+    Route::get('/our_eqipments', 'user_equipments_page')->name('user_equipments_page');
 });
 
 Route::prefix('admin')->middleware(['auth:sanctum', 'permission:Access Admin Dashboard', config('jetstream.auth_session'), 'verified',])->group(function () {
@@ -41,11 +52,7 @@ Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashb
     });
 
     Route::controller(siteController::class)->group(function () {
-        Route::get('/about-us', 'aboutUs')->name('aboutUs');
-        Route::get('/our-team','ourTeam')->name('ourTeam');
-        Route::get('/contact-us','contactUs')->name('contactUs');
-        Route::get('/pricing','pricing')->name('pricing');
-        Route::get('/checkout/{id}','checkout')->name('checkout');
+        Route::get('/checkout/{id}', 'checkout')->name('checkout');
     });
 
     Route::controller(trainerController::class)->group(function () {
@@ -53,8 +60,7 @@ Route::prefix('User')->middleware(['auth:sanctum', 'permission:Access User Dashb
     });
 
     Route::controller(equipmentController::class)->group(function () {
-        Route::get('/our_eqipments','user_equipments_page')->name('user_equipments_page');
-        Route::post('/reserve_equipment','add_equipment_reservation')->name('add_equipment_reservation');
+        Route::post('/reserve_equipment', 'add_equipment_reservation')->name('add_equipment_reservation');
     });
 
     Route::controller(reservationController::class)->group(function () {
@@ -94,9 +100,9 @@ Route::middleware(['permission:Manage Employees', config('jetstream.auth_session
 
     Route::controller(employeeController::class)->group(function () {
         Route::get('/new-employee', 'newEmployee')->name('newEmployee');
-        Route::post('/store-employee','storeEmployee')->name('storeEmployee');
-        Route::post('/update-employee/{id}','updateEmployee')->name('updateEmployee');
-        Route::post('/delete-employee/{id}','deleteEmployee')->name('deleteEmployee');
+        Route::post('/store-employee', 'storeEmployee')->name('storeEmployee');
+        Route::post('/update-employee/{id}', 'updateEmployee')->name('updateEmployee');
+        Route::post('/delete-employee/{id}', 'deleteEmployee')->name('deleteEmployee');
     });
 
 });
@@ -105,9 +111,9 @@ Route::middleware([config('jetstream.auth_session'), 'verified',])->group(functi
 
     Route::controller(packagesController::class)->group(function () {
         Route::get('/all-Packages', 'allPackages')->name('allPackages');
-        Route::post('/store-package','storePackage')->name('storePackage');
-        Route::post('/update-package/{id}','updatePackage')->name('updatePackage');
-        Route::post('/delete-package/{id}','deletePackage')->name('deletePackage');
+        Route::post('/store-package', 'storePackage')->name('storePackage');
+        Route::post('/update-package/{id}', 'updatePackage')->name('updatePackage');
+        Route::post('/delete-package/{id}', 'deletePackage')->name('deletePackage');
     });
 
     Route::controller(attendanceController::class)->group(function () {
@@ -119,7 +125,7 @@ Route::middleware([config('jetstream.auth_session'), 'verified',])->group(functi
         Route::get('/all-payments', 'payment_page')->name('payment_page');
         Route::post('/save-Payment', 'savePayment')->name('savePayment');
         Route::get('/get_all_payments_datatable', 'get_all_payments_datatable')->name('get_all_payments_datatable');
-        Route::post('/mark_as_paid_payment','mark_as_paid_payment')->name('mark_as_paid_payment');
+        Route::post('/mark_as_paid_payment', 'mark_as_paid_payment')->name('mark_as_paid_payment');
     });
 
     Route::controller(trainerController::class)->group(function () {
@@ -130,12 +136,12 @@ Route::middleware([config('jetstream.auth_session'), 'verified',])->group(functi
     });
 
     Route::controller(equipmentController::class)->group(function () {
-        Route::get('/equipments','admin_equipments_page');
-        Route::get('/get_equipments','get_equipments')->name('get_equipments');
-        Route::post('/add_new_equipment','add_new_equipment')->name('add_new_equipment');
-        Route::get('/admin_equipment_reservations_page','admin_equipment_reservations_page')->name('admin_equipment_reservations_page');
-        Route::get('/admin_get_equipment_reservations','get_equipment_reservations')->name('get_equipment_reservations');
-        Route::post('/equipment_reservation_mark_as_complete','equipment_reservation_mark_as_complete')->name('equipment_reservation_mark_as_complete');
-        Route::post('/equipment_reservation_cancel','equipment_reservation_cancel')->name('equipment_reservation_cancel');
+        Route::get('/equipments', 'admin_equipments_page');
+        Route::get('/get_equipments', 'get_equipments')->name('get_equipments');
+        Route::post('/add_new_equipment', 'add_new_equipment')->name('add_new_equipment');
+        Route::get('/admin_equipment_reservations_page', 'admin_equipment_reservations_page')->name('admin_equipment_reservations_page');
+        Route::get('/admin_get_equipment_reservations', 'get_equipment_reservations')->name('get_equipment_reservations');
+        Route::post('/equipment_reservation_mark_as_complete', 'equipment_reservation_mark_as_complete')->name('equipment_reservation_mark_as_complete');
+        Route::post('/equipment_reservation_cancel', 'equipment_reservation_cancel')->name('equipment_reservation_cancel');
     });
 });
